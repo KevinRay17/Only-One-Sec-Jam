@@ -35,6 +35,11 @@ public class Tilemap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject[] MapObjects = FindGameObjectsByLayer(9);
+        foreach (var c in MapObjects)
+        {
+            c.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        }
         
         // Create a temporary reference to the current scene.
         Scene currentScene = SceneManager.GetActiveScene ();
@@ -98,7 +103,7 @@ public class Tilemap : MonoBehaviour
             tiles = CreateLevel(mapSizeX, mapSizeY);
         }
         
-        Physics.gravity = new Vector3(0,0,9.8f);
+        Physics.gravity = new Vector3(0,0,16.8f);
         
        /* tiles = new int[mapSizeX, mapSizeY];
         for (int x = 0; x < mapSizeX; x++)
@@ -213,7 +218,7 @@ public class Tilemap : MonoBehaviour
 
 
         //Raycast floor check
-        if (Physics.Raycast(selectedUnit.transform.position, transform.TransformDirection(Vector3.forward), out hit, .25f))
+        if (Physics.Raycast(selectedUnit.transform.position, transform.TransformDirection(Vector3.forward), out hit, .5f))
         {
             if (hit.collider.gameObject.CompareTag("StartPath"))
             {
@@ -233,6 +238,8 @@ public class Tilemap : MonoBehaviour
                 //Score
                 if (!hit.collider.gameObject.GetComponent<PathObjects>().gavePoints)
                 {
+                    var moveSound = Resources.Load<AudioClip>("Sounds/move2");
+                    AudioManager.instance.PlaySound(moveSound, .3f);
                     StartCoroutine(Score.instance.AddPoints());
                     hit.collider.gameObject.GetComponent<PathObjects>().gavePoints = true;
                 }
@@ -286,6 +293,9 @@ public class Tilemap : MonoBehaviour
         
         restarting = true;
         falling = true;
+        Score.instance.levelsCleared++;
+        var Win = Resources.Load<AudioClip>("Sounds/levelWin");
+        AudioManager.instance.PlaySound(Win);
         GameObject[] MapObjects = FindGameObjectsByLayer(9);
       // Color StartColor =MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.GetColor("_EmissionColor");
       /* float colUp = 1f;
@@ -341,6 +351,8 @@ public class Tilemap : MonoBehaviour
         StartCoroutine(LightFade.instance.FadeIn());
         yield return new WaitForSeconds(.5f);
         selectedUnit.transform.position = new Vector3(UnitX,UnitY,-10f);
+        var fallInSound = Resources.Load<AudioClip>("Sounds/fallIn");
+        AudioManager.instance.PlaySound(fallInSound);
         yield return new WaitForSeconds(.7f);
         falling = false;
         restarting = false;
@@ -350,6 +362,8 @@ public class Tilemap : MonoBehaviour
     {
         restarting = true;
         float col = 1f;
+        var fallSound = Resources.Load<AudioClip>("Sounds/fall");
+        AudioManager.instance.PlaySound(fallSound);
         yield return new WaitForSeconds(.5f);
       
         GameObject[] MapObjects = FindGameObjectsByLayer(9);
@@ -376,6 +390,8 @@ public class Tilemap : MonoBehaviour
         StartCoroutine(LightFade.instance.FadeIn());
         yield return new WaitForSeconds(.5f);
         selectedUnit.transform.position = new Vector3(UnitX,UnitY,-10f);
+        var fallInSound = Resources.Load<AudioClip>("Sounds/fallIn");
+        AudioManager.instance.PlaySound(fallInSound);
         yield return new WaitForSeconds(.7f);
         falling = false;
         restarting = false;
@@ -385,7 +401,14 @@ public class Tilemap : MonoBehaviour
     {
         restarting = true;
         falling = true;
-        Clone.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        var fallSound = Resources.Load<AudioClip>("Sounds/fall");
+        AudioManager.instance.PlaySound(fallSound);
+        GameObject[] MapObjects = FindGameObjectsByLayer(9);
+        foreach (var c in MapObjects)
+        {
+            c.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        
         yield return 0;
     }
     

@@ -10,10 +10,15 @@
           <e p="tvLight_Flux.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="AudioManager.cs" t="Include" />
           <e p="Bouncer.cs" t="Include" />
+          <e p="DontDestroy.cs" t="Include" />
           <e p="FloorCheck.cs" t="Include" />
           <e p="LightFade.cs" t="Include" />
           <e p="PathObjects.cs" t="Include" />
+          <e p="PositionHolder.cs" t="Include" />
+          <e p="Rules.cs" t="Include" />
+          <e p="SceneLoader.cs" t="Include" />
           <e p="Score.cs" t="Include" />
           <e p="Tilemap.cs" t="Include" />
           <e p="TileType.cs" t="Include" />
