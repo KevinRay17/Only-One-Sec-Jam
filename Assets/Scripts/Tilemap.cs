@@ -26,15 +26,19 @@ public class Tilemap : MonoBehaviour
     public GameObject StartBlock;
     private GameObject Clone;
 
-    private bool restarting = false;
+    public bool restarting = false;
     [ColorUsage(true,true)]
     public Color myColor = new Vector4(0,0,.7f,1);
     public Color endColor = new Vector4(.7f,0,0,1);
+
+    public static Tilemap instance;
     
     RaycastHit hit;
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+        
         GameObject[] MapObjects = FindGameObjectsByLayer(9);
         foreach (var c in MapObjects)
         {
@@ -275,6 +279,29 @@ public class Tilemap : MonoBehaviour
         }
         return validTransforms.ToArray();
     }
+
+    
+    GameObject[] FindGameObjectsByLayer2 (int layer) {
+        GameObject[] goArray = (GameObject[])FindObjectsOfType(typeof(GameObject));
+        List<GameObject> goList = new System.Collections.Generic.List<GameObject>();
+        
+        Debug.Log(goArray.Length);
+        
+        for (var i = 0; i < goArray.Length; i++) {
+            if (goArray[i].layer == layer) {
+                goList.Add(goArray[i]);
+                Debug.Log("ADD");
+            }
+        }
+        
+        if (goList.Count == 0) {
+            return null;
+        }
+        
+        return goList.ToArray();
+    }
+
+    
     
     void DeleteGameObjectsByLayer(int layer)
     {
@@ -296,40 +323,49 @@ public class Tilemap : MonoBehaviour
         Score.instance.levelsCleared++;
         var Win = Resources.Load<AudioClip>("Sounds/levelWin");
         AudioManager.instance.PlaySound(Win);
-        GameObject[] MapObjects = FindGameObjectsByLayer(9);
-      // Color StartColor =MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.GetColor("_EmissionColor");
-      /* float colUp = 1f;
+        
+        GameObject[] MapObjects = FindGameObjectsByLayer2(9);
+        foreach (var c in MapObjects)
+        {
+            c.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor",
+                myColor);
+        } 
+        
+        float colUp = 1f;
         while (colUp >= 0f)
         {
-           Debug.Log("Ah");
+       
           
-           // foreach (var c in MapObjects)
-            //{
-                Color intensity = MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.GetColor("_EmissionColor");
-                MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissionColor",
-                    new Color(intensity.r, intensity.g, intensity.b + 1, intensity.a));
-            //} 
+           //Color startColor = MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.GetColor("_EmissionColor");
+            
+           foreach (var c in MapObjects)
+           {
+                Color intensity = c.gameObject.GetComponent<Renderer>().material.GetColor("_EmissionColor");
+                c.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor",
+                    new Color(intensity.r, intensity.g, intensity.b + .05f, intensity.a));
+           } 
             
             colUp -= .2f;
             yield return 0;
-        }*/
+        }
 
         float col = 1f;
         StartCoroutine(Score.instance.AddTime());
         yield return new WaitForSeconds(.5f);
         
-       /* while (col >= 0f)
+        while (col >= 0f)
         {
-            //foreach (var c in MapObjects)
-            //{
-                Color intensity = MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.GetColor("_EmissionColor");
-                MapObjects[0].gameObject.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissionColor",
-                    new Color(intensity.r, intensity.g, intensity.b - 1, intensity.a));
-            //}
+            foreach (var c in MapObjects)
+            {
+                Color intensity = c.gameObject.GetComponent<Renderer>().material.GetColor("_EmissionColor");
+                c.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor",
+                    new Color(intensity.r, intensity.g, intensity.b - .5f, intensity.a));
+            }
 
             col -= .1f;
             yield return 0;
-        }*/ 
+        }
+        
         DeleteGameObjectsByLayer(9);
         if (mapSizeX < 16)
         {

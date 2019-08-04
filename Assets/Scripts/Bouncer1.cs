@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bouncer : MonoBehaviour
+public class Bouncer1 : MonoBehaviour
 {
     private Vector3 startPos;
 
@@ -20,12 +20,12 @@ public class Bouncer : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        mod = Random.Range(.25f, .5f);
-        spdMod = Random.Range(-2f, 2f);
+        mod = .25f;
+        spdMod = .2f;
         startPos = transform.position;
-        rot1 = Random.Range(-10, 10);
-        rot2 = Random.Range(-10, 10);
-        rot3 = Random.Range(-10, 10);
+        rot1 = Random.Range(-5, 5);
+        rot2 = Random.Range(-5, 5);
+        rot3 = Random.Range(-5, 5);
     }
 	
     // Update is called once per frame

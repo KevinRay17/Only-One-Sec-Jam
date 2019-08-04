@@ -43,6 +43,10 @@ public class PathObjects : MonoBehaviour
         {
             intensity -= .02f;
             gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", new Color(0,0, intensity, 1));
+            if (Tilemap.instance.restarting)
+            {
+                break;
+            }
             yield return 0;
         }
         boom = false;

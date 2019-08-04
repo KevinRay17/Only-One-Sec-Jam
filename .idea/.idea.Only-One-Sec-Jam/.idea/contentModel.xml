@@ -12,8 +12,8 @@
         <e p="Scripts" t="Include">
           <e p="AudioManager.cs" t="Include" />
           <e p="Bouncer.cs" t="Include" />
+          <e p="Bouncer1.cs" t="Include" />
           <e p="DontDestroy.cs" t="Include" />
-          <e p="FloorCheck.cs" t="Include" />
           <e p="LightFade.cs" t="Include" />
           <e p="PathObjects.cs" t="Include" />
           <e p="PositionHolder.cs" t="Include" />
