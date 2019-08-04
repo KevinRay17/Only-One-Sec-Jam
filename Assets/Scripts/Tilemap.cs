@@ -45,7 +45,7 @@ public class Tilemap : MonoBehaviour
         if (sceneName == "Menu")
         {
             mapSizeX = 10;
-            mapSizeY = 9;
+            mapSizeY = 10;
             tiles = new int[mapSizeX, mapSizeY];
             for (int x = 0; x < mapSizeX; x++)
             {
@@ -56,23 +56,40 @@ public class Tilemap : MonoBehaviour
             }
 
             //Map Pathing
-            tiles[1, 4] = 2;
-            tiles[1, 3] = 0;
-            tiles[2, 3] = 0;
-            tiles[3, 3] = 0;
-            tiles[3, 2] = 0;
-            tiles[3, 7] = 0;
-            tiles[3, 8] = 0;
-            tiles[4, 2] = 0;
-            tiles[5, 2] = 0;
-            tiles[6, 2] = 0;
-            tiles[6, 3] = 0;
-            tiles[6, 7] = 0;
-            tiles[6, 8] = 0;
-            tiles[7, 3] = 0;
-            tiles[8, 3] = 0;
-            tiles[8, 4] = 0;
-            
+            tiles[0, 3] = 4;
+            tiles[0, 4] = 4;
+            tiles[0, 5] = 4;
+            tiles[1, 2] = 4;
+            tiles[2, 1] = 4;
+            tiles[3, 0] = 4;
+            tiles[4, 0] = 4;
+            tiles[5, 0] = 4;
+            tiles[6, 0] = 4;
+            tiles[7, 1] = 4;
+            tiles[8, 2] = 4;
+            tiles[9, 3] = 4;
+            tiles[9, 4] = 4;
+            tiles[9, 5] = 4;
+            tiles[8, 6] = 4;
+            tiles[8, 7] = 4;
+            tiles[7, 8] = 4;
+            tiles[6, 9] = 4;
+            tiles[5, 9] = 4;
+            tiles[4, 9] = 4;
+            tiles[3, 9] = 4;
+            tiles[2, 8] = 4;
+            tiles[1, 7] = 4;
+            tiles[1, 6] = 4;
+            tiles[2, 4] = 4;
+            tiles[3, 3] = 4;
+            tiles[4, 2] = 4;
+            tiles[5, 2] = 4;
+            tiles[6, 3] = 4;
+            tiles[7, 4] = 4;
+            tiles[3, 6] = 4;
+            tiles[3, 7] = 4;
+            tiles[6, 6] = 4;
+            tiles[6, 7] = 4;
         }
         else
         {
@@ -81,7 +98,7 @@ public class Tilemap : MonoBehaviour
             tiles = CreateLevel(mapSizeX, mapSizeY);
         }
         
-        Physics.gravity = new Vector3(0,0,22.8f);
+        Physics.gravity = new Vector3(0,0,9.8f);
         
        /* tiles = new int[mapSizeX, mapSizeY];
         for (int x = 0; x < mapSizeX; x++)
@@ -140,13 +157,14 @@ public class Tilemap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Camera.transform.position = new Vector3(mapSizeX/2,mapSizeY/2, -10);
 
         if (Score.instance.secondsLeft <= 0 && !restarting)
         {
             StartCoroutine(GameOver());
         }
         
-        Camera.transform.position = new Vector3(mapSizeX/2,mapSizeY/2, -10);
+       
         if (!falling)
         {
             if (Input.anyKeyDown)
@@ -206,10 +224,8 @@ public class Tilemap : MonoBehaviour
             {
                 falling = true;
             }
-            else if (hit.collider.gameObject.CompareTag("Path"))
+            else if (hit.collider.gameObject.CompareTag("Path") && !restarting)
             { 
-                Debug.Log(hit.collider.gameObject);
-
                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", myColor); 
                 hit.collider.gameObject.GetComponent<PathObjects>().boom = true;
                 StartBlock.GetComponent<PathObjects>().boom = true;
